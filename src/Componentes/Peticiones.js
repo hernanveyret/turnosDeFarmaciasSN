@@ -49,9 +49,9 @@ const Peticiones = ({ day, month, year, setLoader }) => {
             <p>{e.address}</p>
           </div>
           <div className="btn-container">
-            <button className="btn-map">
+          { /* <button className="btn-map">
               <img src={logoMap} alt="Logo maps" />
-            </button>
+            </button>  */ }
           </div>
         </div>
       ))}
