@@ -6,6 +6,7 @@ import AlmanacDay from './AlmanacDay';
 import Settings from './Settings';
 import Peticiones from './Peticiones';
 import Loader from './Loader';
+import Maps from './Maps';
 
 import './home.css';
 
@@ -74,6 +75,7 @@ const Home = () => {
   const [ almanacType, setAlmanacType ] = useState(initConfig.almanacType)
   const [ modoNocturno, setModoNocturno ] = useState(initConfig.modoNocturno)
   const [ loader, setLoader ] = useState(false)
+  const [ mapsOn, setMapsOn ] = useState(false)
   const [ fecha, setFecha ] = useState(new Date())
   const [ day, setDay ] = useState(fecha.getDate()); // dia en numero.
   const [ dayString, setDayString ] = useState(fecha.toLocaleString('es-ES', { weekday: 'long' }));
@@ -207,6 +209,7 @@ console.log(diaDeLaSemana); // Por ejemplo, "martes"
   
   return (
     <div className="containerHome" ref={bodyRef}>
+      { mapsOn && <Maps /> }
          { loader && <Loader />}
       <header ref={headerRef}>
         <h1>Farmacias de turno SN</h1>

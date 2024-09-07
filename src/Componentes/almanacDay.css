@@ -50,6 +50,9 @@
   width: 2rem;
   height: 2rem;
 }
+.msj-hs {
+  margin-top: 1rem;
+}
 @media screen and ( min-width: 37em) {
   .cardAlmanac {
     height: 80%;

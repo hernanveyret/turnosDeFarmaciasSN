@@ -9,17 +9,17 @@ const Peticiones = ({ day, month, year, setLoader }) => {
 
   //const url = `https://farmacias-de-turno-sn.vercel.app/api/farmacias/${year}/${month + 1}/${day}`
   let url = `https://server-farmacias.vercel.app/api/farmacias/${year}/${month + 1}/${day}`
-  console.log(url)
+  
 
   useEffect(() => {
     
-    console.log(url)
+   
 
     setLoader(true);
     axios.get(url)
       .then(response => {
        // console.log(response)
-        console.log(response.data)
+        //console.log(response.data)
         setData(response.data);
         setLoader(false);
       })

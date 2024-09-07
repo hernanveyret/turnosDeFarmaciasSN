@@ -41,7 +41,9 @@ td {
 .btn-next {
   right: 0;
 }
-
+.msj-hs {
+  margin-top: 1rem;
+}
 @media screen and ( min-width: 37em) {
   table {
     height: 50vh;
