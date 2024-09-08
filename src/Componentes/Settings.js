@@ -3,14 +3,14 @@ import './settings.css';
 const Settings = ({settingOptions,almanacType,handleChangeAlmanacType,setModoNocturno,modoNocturno}) => {
   return (
     <div className="containerSettings" id="panelSetting">
-      <button className="btn-cerrar-settings" onClick={settingOptions}>X</button>
+      <button className="btn-cerrar-settings" onClick={settingOptions} title="Cerrar Menu">X</button>
       <div className="nav">
       <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="m405.38-120-14.46-115.69q-19.15-5.77-41.42-18.16-22.27-12.38-37.88-26.53L204.92-235l-74.61-130 92.23-69.54q-1.77-10.84-2.92-22.34-1.16-11.5-1.16-22.35 0-10.08 1.16-21.19 1.15-11.12 2.92-25.04L130.31-595l74.61-128.46 105.93 44.61q17.92-14.92 38.77-26.92 20.84-12 40.53-18.54L405.38-840h149.24l14.46 116.46q23 8.08 40.65 18.54 17.65 10.46 36.35 26.15l109-44.61L829.69-595l-95.31 71.85q3.31 12.38 3.7 22.73.38 10.34.38 20.42 0 9.31-.77 19.65-.77 10.35-3.54 25.04L827.92-365l-74.61 130-107.23-46.15q-18.7 15.69-37.62 26.92-18.92 11.23-39.38 17.77L554.62-120H405.38Zm73.54-260q41.85 0 70.93-29.08 29.07-29.07 29.07-70.92t-29.07-70.92Q520.77-580 478.92-580q-42.07 0-71.04 29.08-28.96 29.07-28.96 70.92t28.96 70.92Q436.85-380 478.92-380Z"/></svg>
       </div>
       <nav>
         <div className="form">
           <div>
-            <button onClick={() => {setModoNocturno(prevMode => !prevMode)}}>        
+            <button onClick={() => {setModoNocturno(prevMode => !prevMode)}} title="Modo oscuro/claro">        
             {
               modoNocturno ?
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFF55"><path d="M460-743.08v-135.38h40v135.38h-40Zm219.85 91.54-27.31-27.31 94.31-98.07 29.07 29.3-96.07 96.08ZM743.08-460v-40h135.38v40H743.08ZM460-81.54v-134.61h40v134.61h-40ZM281.69-652.77l-98.61-94.08 30.07-28.3 96.08 95.3-27.54 27.08Zm464.93 469.69-94.08-98.07 27.08-26.31 95.53 93.84-28.53 30.54ZM81.54-460v-40h135.38v40H81.54Zm130.84 276.92-27.53-30.07 94.3-94.31 14.39 13.92 15.15 14.16-96.31 96.3ZM480.18-280q-83.26 0-141.72-58.28Q280-396.56 280-479.82q0-83.26 58.28-141.72Q396.56-680 479.82-680q83.26 0 141.72 58.28Q680-563.44 680-480.18q0 83.26-58.28 141.72Q563.44-280 480.18-280Z"/></svg>
@@ -20,7 +20,7 @@ const Settings = ({settingOptions,almanacType,handleChangeAlmanacType,setModoNoc
             </button>
           </div>
           <div>
-            <button onClick={handleChangeAlmanacType}>
+            <button onClick={handleChangeAlmanacType}title="Almanaque tipo meses">
             { almanacType ?
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#75FB4C"><path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z"/></svg>
               :  
@@ -29,7 +29,7 @@ const Settings = ({settingOptions,almanacType,handleChangeAlmanacType,setModoNoc
             </button>
           </div>
           <div>
-            <button onClick={handleChangeAlmanacType}>
+            <button onClick={handleChangeAlmanacType} title="Almanaque tipo día">
             {
               almanacType ?
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M224.62-120q-27.62 0-46.12-18.5Q160-157 160-184.62v-510.76q0-27.62 18.5-46.12Q197-760 224.62-760h70.76v-89.23h43.08V-760h286.16v-89.23h40V-760h70.76q27.62 0 46.12 18.5Q800-723 800-695.38v510.76q0 27.62-18.5 46.12Q763-120 735.38-120H224.62Zm0-40h510.76q9.24 0 16.93-7.69 7.69-7.69 7.69-16.93v-350.76H200v350.76q0 9.24 7.69 16.93 7.69 7.69 16.93 7.69ZM200-575.39h560v-119.99q0-9.24-7.69-16.93-7.69-7.69-16.93-7.69H224.62q-9.24 0-16.93 7.69-7.69 7.69-7.69 16.93v119.99Zm0 0V-720-575.39Z"/></svg>
