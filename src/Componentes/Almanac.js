@@ -69,10 +69,10 @@ const Almanac = ({day,month,monthString,year,cantDiasMes,celdasVacias,handlePrev
       </tbody>
       </table>
       <div className="msj-hs">
-        {/*
+        
           <p>De 00hs a 8:30hs</p>
-          <p>Ver día anterior</p> */
-        }
+          <p>Ver día anterior</p> 
+        
       </div>
     </div>
   );

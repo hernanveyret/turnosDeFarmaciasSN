@@ -11,7 +11,57 @@ const Peticiones = ({hora, day, month, year, setLoader }) => {
   
 
   useEffect(() => {
-    //console.log(hora)
+   
+
+    setLoader(true);
+    axios.get(url)
+      .then(response => {
+       // console.log(response)
+        //console.log(response.data)
+        setData(response.data);
+        setLoader(false);
+      })
+      .catch(error => {
+        console.error('Error al obtener los datos:', error);
+        setError('Hubo un error al obtener los datos.');
+        setLoader(false);
+      });
+   
+
+  }, [day, month, year, setLoader,url]);
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!data) {
+    return <div></div>;
+  }
+
+  return (
+    <div className="containerFarmacias">
+      <p>Letra: <span style={{ color: "green", fontWeight: "bold" }}>{data.dateShift}</span></p>
+      {data.pharmacies.map((e, i) => (
+        <div className="items" key={i}>
+          <div className="infoItems">
+            <p>{e.name}</p>
+            <p>{e.address}</p>
+          </div>
+          <div className="btn-container">
+          { /* <button className="btn-map">
+              <img src={logoMap} alt="Logo maps" />
+            </button>  */ }
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default Peticiones;
+
+/*
+  //console.log(hora)
    if( hora < '8:30:00' ){
     //console.log('se actualizan las farmacias al dia anterior ')
 
@@ -47,34 +97,5 @@ const Peticiones = ({hora, day, month, year, setLoader }) => {
       });
    }
 
-  }, [day, month, year, setLoader,url]);
 
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  if (!data) {
-    return <div></div>;
-  }
-
-  return (
-    <div className="containerFarmacias">
-      <p>Letra: <span style={{ color: "green", fontWeight: "bold" }}>{data.dateShift}</span></p>
-      {data.pharmacies.map((e, i) => (
-        <div className="items" key={i}>
-          <div className="infoItems">
-            <p>{e.name}</p>
-            <p>{e.address}</p>
-          </div>
-          <div className="btn-container">
-          { /* <button className="btn-map">
-              <img src={logoMap} alt="Logo maps" />
-            </button>  */ }
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-export default Peticiones;
+*/
