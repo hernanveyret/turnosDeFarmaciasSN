@@ -86,19 +86,24 @@ const Home = () => {
   const [ cantDiasMes, setCantDiasMes ] = useState(new Date(year, month + 1, 0).getDate()); // Ultimo dia del mes anterior
   const [ celdasVacias, setCeldasVacias ] = useState(new Date(year, month, 1).getDay()) // Posicion del primer dia del mes, del 0 al 6, dom-lun...
   
+  let hs = fecha.getHours();
+  let mn = fecha.getMinutes();
+  let ss = fecha.getSeconds()
+  const [hora, setHora ] = useState(mn < 9 ? `${hs}:0${mn}:0${ss}`: `${hs}:${mn}:${ss}` )
   /*
-
-
+  
+  
   // Crea una nueva instancia de Date para el 3 de septiembre de 2024
-const fechaEspecifica = new Date(2024, 8, 3); // El mes es 0-indexado, así que septiembre es 8
-
-// Obtén el nombre del día de la semana en español
-const diaDeLaSemana = fechaEspecifica.toLocaleString('es-ES', { weekday: 'long' });
-
-console.log(diaDeLaSemana); // Por ejemplo, "martes"
-*/
-
-  /*
+  const fechaEspecifica = new Date(2024, 8, 3); // El mes es 0-indexado, así que septiembre es 8
+  
+  // Obtén el nombre del día de la semana en español
+  const diaDeLaSemana = fechaEspecifica.toLocaleString('es-ES', { weekday: 'long' });
+  
+  console.log(diaDeLaSemana); // Por ejemplo, "martes"
+  */
+ 
+ /*
+ console.log(hora)
   console.log('dia:', day)
   console.log('dia string:',dayString)
   console.log('mes:', month)
@@ -255,6 +260,7 @@ console.log(diaDeLaSemana); // Por ejemplo, "martes"
         <article className="farmacias">
         <h2>Datos de Farmacias</h2>
             <Peticiones
+              hora={hora}
               day={day}
               month={month}
               year={year}

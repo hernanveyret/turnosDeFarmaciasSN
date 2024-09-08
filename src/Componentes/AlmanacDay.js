@@ -34,8 +34,10 @@ const AlmanacDay = ({day,month,monthString,dayString,year,handlePrev,handleNext,
         </div>
       </div>
       <div className="msj-hs">
-        <p>De 00hs a 8:30hs</p>
-        <p>Ver día anterior</p>
+        {/*
+          <p>De 00hs a 8:30hs</p>
+          <p>Ver día anterior</p> */
+        }
       </div>
     </div>
   )
