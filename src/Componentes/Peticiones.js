@@ -47,9 +47,7 @@ const Peticiones = ({hora, day, month, year, setLoader }) => {
       });
    }
 
-
   }, [day, month, year, setLoader,url]);
-
 
   if (error) {
     return <div>{error}</div>;
