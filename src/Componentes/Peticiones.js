@@ -9,7 +9,7 @@ const Peticiones = ({hora, day, month, year, setLoader }) => {
 
   const convertToTime = (timeStr) => {
     const [hours, minutes, seconds] = timeStr.split(':');
-    return new Date(1970, 0, 1, hours, minutes, seconds).getTime();
+    return new Date(2024, 0, 1, hours, minutes, seconds).getTime();
   };
 
   const horaActual = convertToTime(hora);
@@ -22,7 +22,7 @@ const Peticiones = ({hora, day, month, year, setLoader }) => {
   useEffect(() => {
    
     if(horaActual >= inicio && horaActual <= fin){
-      console.log('muestra letra del dia anteior')
+      //console.log('muestra letra del dia anteior')
       setLoader(true);
       axios.get(`https://server-farmacias.vercel.app/api/farmacias/${year}/${month + 1}/${day - 1}`)
         .then(response => {
@@ -38,7 +38,7 @@ const Peticiones = ({hora, day, month, year, setLoader }) => {
         });
 
     }else{
-      console.log('muestra letra del dia actual')
+      //console.log('muestra letra del dia actual')
       setLoader(true);
       axios.get(url)
       .then(response => {
