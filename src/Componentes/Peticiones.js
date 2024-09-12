@@ -95,7 +95,7 @@ useEffect(() => {
             <p>{e.tel}</p>
           </div>
           <div className="btn-container">
-          <a href={`https://www.google.com/maps/search/?api=1&query=${e.lat},${e.lon}`} rel="noopener" target="_blank">
+          <a href={`https://www.google.com/maps/search/?api=1&query=${e.lat},${e.lon}`} rel="noopener" target="_blank" title="Ver en mapa">
             <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#EA3323">
               <path d="M480.06-486.67q30.27 0 51.77-21.56 21.5-21.55 21.5-51.83 0-30.27-21.56-51.77-21.55-21.5-51.83-21.5-30.27 0-51.77 21.56-21.5 21.55-21.5 51.83 0 30.27 21.56 51.77 21.55 21.5 51.83 21.5ZM480-80Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Z"/>
             </svg>
