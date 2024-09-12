@@ -35,7 +35,6 @@
 }
 .form div {
   width: 100%;
-  padding: 1rem;
   color: black;
   display: flex;
   justify-content: space-between;
@@ -49,6 +48,8 @@
   border: none;
   background: transparent;
   filter: drop-shadow(2px 2px 5px black);
+  width: 100%;
+  padding: 1rem;
 }
 
 @media screen and ( min-width: 37em) {

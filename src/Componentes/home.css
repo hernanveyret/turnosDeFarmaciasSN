@@ -21,6 +21,9 @@ header {
   top: 0;
   z-index: 1001;
 }
+header a {
+  text-decoration: none;
+}
 h1 {
   color: white;
   display: flex;
@@ -51,6 +54,10 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+footer p {
+  text-align: center;
+  font-size:.9rem;
 }
 .almanaque, .farmacias {
   max-width: 100%;
@@ -86,7 +93,8 @@ footer {
   }
   .almanaque, .farmacias {
     width: 50vw;
-    min-height: calc(50vh - var(--altoHeader));
+    /* min-height: calc(50vh - var(--altoHeader)); */
+    max-height: calc(100vh - var(--altoHeader));
     border: 1px solid green;
   }
 }

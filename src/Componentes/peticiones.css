@@ -13,20 +13,34 @@
   margin: .3rem 0;
   display: flex;
 }
-.infoItems, .btn-container {
-  width: 50%;
+.infoItems {
+  width: 70%;
+  padding-left: 1rem;
 }
+
 .btn-container {
+  width: 30%;
   display:flex;
   justify-content: flex-end;
+  align-items: center;
 }
 .btn-map {
-  width: 1.2rem;
-  height: 1.2rem;
+  width: auto;
   border: none;
   background: transparent;
-  margin-right: 2rem;
+  margin-right: 1rem;
 }
 .btn-map img {
   width: 100%
+}
+.btn-tel {
+  text-decoration: none;
+  color: white;
+}
+@media screen and ( min-width: 37em) {
+  .containerFarmacias {
+    overflow: auto;
+    justify-content: flex-start;
+  }
+  
 }
