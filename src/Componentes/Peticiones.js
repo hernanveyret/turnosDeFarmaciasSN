@@ -22,7 +22,7 @@ const Peticiones = ({hora, day,setDay, month, year, setLoader,setMonth }) => {
   const fin = convertToTime('08:30:00');
 
   useEffect(() => {
-  
+    console.log(new Date())
     setLoader(true);
     axios.get(url)
       .then(response => {
@@ -50,7 +50,7 @@ useEffect(() => {
         });
 
         console.log(newArray)
-        
+
       }else{
         setLoader(false);
         return
