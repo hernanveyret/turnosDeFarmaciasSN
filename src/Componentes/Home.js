@@ -6,6 +6,9 @@ import Settings from './Settings';
 import Peticiones from './Peticiones';
 import Loader from './Loader';
 import Maps from './Maps';
+import QuestionGeo from './QuestionGeo';
+import Error from './Error';
+import SharedConfirm from './ShareConfirm';
 
 import './home.css';
 
@@ -60,22 +63,31 @@ const Home = () => {
       mes:"Diciembre"
     },
   ]
+
   let headerRef = useRef();
   let bodyRef = useRef()
   let fotterRef = useRef()
   let cardHeaderRef = useRef()
 
-  let localConfig = localStorage.getItem('settingsFarmacia')
+let localConfig = localStorage.getItem('settingsFarmaciaV2')
   const [ initConfig, setInitConfig ] = useState(localConfig ? JSON.parse(localConfig) : { 
     modoNocturno: false,
-    almanacType: true
+    almanacType: true,
+    advertising: false,
+    ubicacion: true,
+    question: true,
   });
-  
+
   const [ almanacType, setAlmanacType ] = useState(initConfig.almanacType)
   const [ modoNocturno, setModoNocturno ] = useState(initConfig.modoNocturno)
-  const [ loader, setLoader ] = useState(false)
-  const [ mapsOn, setMapsOn ] = useState(false)
-  const [ fecha, setFecha ] = useState(new Date())
+  const [ ubication, setUbication ] = useState(initConfig.ubicacion)
+  const [ question, setQuestion ] = useState(initConfig.question);
+  
+  const [ shared, setShared ] = useState(false);
+  const [ error, setError ] = useState(false);
+  const [ loader, setLoader ] = useState(false);
+  const [ mapsOn, setMapsOn ] = useState(false);
+  const [ fecha, setFecha ] = useState(new Date());
   const [ day, setDay ] = useState(fecha.getDate()); // dia en numero.
   const [ dayString, setDayString ] = useState(fecha.toLocaleString('es-ES', { weekday: 'long' }));
   const [ month, setMonth ] = useState(fecha.getMonth()); // mes en numero.
@@ -84,13 +96,19 @@ const Home = () => {
   const [ year, setYear ] = useState(fecha.getFullYear()); // año
   const [ cantDiasMes, setCantDiasMes ] = useState(new Date(year, month + 1, 0).getDate()); // Ultimo dia del mes anterior
   const [ celdasVacias, setCeldasVacias ] = useState(new Date(year, month, 1).getDay()) // Posicion del primer dia del mes, del 0 al 6, dom-lun...
+  const [ lat1, setLat1 ] = useState(null)
+  const [ lon1, setLon1 ] = useState(null);
   
+
+  useEffect(() => {
+    geo()
+  },[]);
+
   let hs = fecha.getHours();
   let mn = fecha.getMinutes();
   let ss = fecha.getSeconds()
-  const [hora, setHora ] = useState(mn < 9 ? `${hs}:0${mn}:0${ss}`: `${hs}:${mn}:${ss}` )
+  const [hora, setHora ] = useState(mn < 9 ? `${hs}:0${mn}:0${ss}`: `${hs}:${mn}:${ss}` );
   /*
-  
   
   // Crea una nueva instancia de Date para el 3 de septiembre de 2024
   const fechaEspecifica = new Date(2024, 8, 3); // El mes es 0-indexado, así que septiembre es 8
@@ -112,6 +130,7 @@ const Home = () => {
   console.log('celvas vacias', celdasVacias); // posicion del primer dia del mes del 0 al 6.
   */
 
+
   // Mes anterior
   const handlePrev = () => {
     month === 0 ? setMonth(0) : setMonth(month - 1);
@@ -122,7 +141,7 @@ const Home = () => {
   }
   // Dia  anterior
   const handleChangeDayStringPrev = () => {
-    console.log('prev')
+    //console.log('prev')
       if(day===1){
         setDay(new Date(year, month, 0).getDate())
         handlePrev()
@@ -163,10 +182,6 @@ const Home = () => {
     }
   };
   
-  const seeInMaps = () => {
-    console.log('ver en mapa')
-  }
-
   const settingOptions = () => {
     const panelSetting = document.getElementById('panelSetting');
     panelSetting.classList.toggle('activatePanel')
@@ -174,8 +189,10 @@ const Home = () => {
   // Cambia el typo de almanaque
   const handleChangeAlmanacType = () => {
     setAlmanacType(prevType => !prevType); 
+    settingOptions()
   };
   
+  // Cambia el estado de almanaque
   useEffect(() => {
     const updatedConfig = {
       ...initConfig,
@@ -183,8 +200,60 @@ const Home = () => {
     };
   
     setInitConfig(updatedConfig);
-    localStorage.setItem('settingsFarmacia', JSON.stringify(updatedConfig));
+    localStorage.setItem('settingsFarmaciaV2', JSON.stringify(updatedConfig));
   }, [almanacType]);
+
+  function geo(){
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    }
+    
+    const success = ( position ) => {      
+      setLat1(position.coords.latitude);
+      setLon1(position.coords.longitude);
+      
+    }
+    
+    const error = (err) => {
+      setUbication(false)
+      setError(true)
+      console.log('codigo de error: ',err.code)
+      console.log('mensage: ',err.message)
+    }
+   
+    if('geolocation' in navigator){     
+      navigator.geolocation.getCurrentPosition(success,error,options)
+
+    }else{
+      console.log('la geolocalizacion esta desactivada')
+    }  
+  }
+  
+  // Cambia el estado de ubicacion en settings y en el localStorage.
+  useEffect(() => {  
+       
+      geo();
+    const updatedConfig = {
+      ...initConfig,
+      ubicacion: ubication
+    }
+     
+    setInitConfig(updatedConfig);
+    localStorage.setItem('settingsFarmaciaV2', JSON.stringify(updatedConfig));
+  },[ubication,question])
+
+  //Cambia el estado para mostrar el cartel de consulta para la geolocalizacion.
+  useEffect(() => {
+    const updatedConfig = {
+      ...initConfig,
+      question: question
+    }
+
+    setInitConfig(updatedConfig);
+    localStorage.setItem('settingsFarmaciaV2', JSON.stringify(updatedConfig));
+  },[question])
 
   // Cambio de normal a modo nocturno
   useEffect(() => {    
@@ -193,7 +262,7 @@ const Home = () => {
       modoNocturno: modoNocturno
     };
     setInitConfig(updatedConfig);
-    localStorage.setItem('settingsFarmacia', JSON.stringify(updatedConfig));
+    localStorage.setItem('settingsFarmaciaV2', JSON.stringify(updatedConfig));
     
     if(modoNocturno === true ) {
       headerRef.current.classList.add('activateDarkMode')
@@ -225,13 +294,29 @@ const Home = () => {
         </button>
       </header>
       <main>
+            { 
+              shared && <SharedConfirm />
+            }
+            { question && <QuestionGeo 
+              question={question} 
+              setQuestion={setQuestion}
+              ubication={ubication}
+              setUbication={setUbication}
+              />}
+
+            { error && <Error 
+                setError={setError}
+            /> }
             <Settings 
+              shared={shared}
+              setShared={setShared}
               settingOptions={settingOptions}
               handleChangeAlmanacType={handleChangeAlmanacType} 
               setModoNocturno={setModoNocturno}
               modoNocturno={modoNocturno}
               almanacType={almanacType}
-              
+              ubication={ubication}
+              setUbication={setUbication}
               />
         <article className="almanaque">
           { almanacType ? <Almanac 
@@ -266,11 +351,16 @@ const Home = () => {
               month={month}
               year={year}
               setLoader={setLoader}
+              setUbication={setUbication}
+              ubication={ubication}
+              lat1={lat1}
+              lon1={lon1}
             />
         </article>
       </main>
       <footer ref={fotterRef}>
-        <p>Diseñado por Hernán Luis Veyret - 2024 - Version 1.1 - hernanveyret@hotmail.com</p>
+        <p>Diseñado por Hernán Luis Veyret - 2024 - Version 1.2 - hernanveyret@hotmail.com</p>
+        <p>Colaboracion de Manuel Eduardo Canepa - manuelcanepa@gmail.com</p>
       </footer>
     </div>
   )

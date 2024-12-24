@@ -1,115 +1,158 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './peticiones.css';
+import React, {useEffect, useRef, useState} from "react";
+import axios from "axios";
+import "./peticiones.css";
+import iconoMaps from '../img/maps-32px.png'
+import MapaUbicaciones from "./MapaUbicaciones";
+import iconoPosicion from '../img/iconoPosicion.svg'
 
-const Peticiones = ({hora, day,setDay, month, year, setLoader,setMonth }) => {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
-  const [array, setArray] = useState([])
-  const [letra, setLetra] = useState('')
+const Peticiones = ({hora, day, month, year, setLoader, ubication, lat1, lon1}) => {
+    const [data, setData] = useState(null);
+    const [error, setError] = useState(null);
+    const [array, setArray] = useState([]);
+    const [letra, setLetra] = useState("");
+    const [mostrarMapa, setMostrarMapa] = useState(false);
 
-  //const url = 'http://localhost:5000/2024'
-  //const url = 'https://raw.githubusercontent.com/hernanveyret/farmaciasDeTurnoSN/main/src/Api/farmacias2024.json'
-  const url = 'https://farmacia-servidor.vercel.app/api/farmacias'
+  const url = "https://farmacia-servidor.vercel.app/api/farmacias";
 
+  // Convierte la hora en texto de string a una hora real
   const convertToTime = (timeStr) => {
-    const [hours, minutes, seconds] = timeStr.split(':');
+    const [hours, minutes, seconds] = timeStr.split(":").map(Number);
     return new Date(2024, 0, 1, hours, minutes, seconds).getTime();
   };
 
   const horaActual = convertToTime(hora);
-  const inicio = convertToTime('00:00:00');
-  const fin = convertToTime('08:30:00');
+  const inicio = convertToTime("00:00:00");
+  const fin = convertToTime("08:30:00");
 
+    const mapRef = useRef(null);
+
+    const calcularDistancia = (lat1, lon1, lat2, lon2) => {
+        const R = 6371;
+        const dLat = ((lat2 - lat1) * Math.PI) / 180;
+        const dLon = ((lon2 - lon1) * Math.PI) / 180;
+
+    const a =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  };
+
+  // Fetch de datos
   useEffect(() => {
-
-    //console.log(new Date())
-
-    setLoader(true);
-    axios.get(url)
-      .then(response => {
-       //console.log(response) 
+    const fetchData = async () => {
+      try {
+        if (setLoader) setLoader(true); 
+        const response = await axios.get(url);
         setData(response.data);
-        setLoader(false);
-      })
-      .catch(error => {
-        console.error('Error al obtener los datos:', error);
-        setError('Hubo un error al obtener los datos.');
-        setLoader(false);
-      });
+      } catch (err) {
+        console.error("Error al obtener los datos:", err);
+        setError("Hubo un error al obtener los datos.");
+      } finally {
+        if (setLoader) setLoader(false);
+      }
+    };
+
+    fetchData();
   }, [setLoader]);
 
-useEffect(() => {
+  // Filtrar farmacias
+  useEffect(() => {
+    if (!data) return;
 
-  if(horaActual >= inicio && horaActual <= fin){
-    //console.log('muestra letra del dia anteior')
-    if (data) {
-      setLoader(true)
-      const newArray = [];
-      if(data[year][month][month+1][day-2]){
-        data[year][month][month+1][day-2].pharmacies.forEach(e => {
-          newArray.push(e);
-        });
+    const isEarlyMorning = horaActual >= inicio && horaActual <= fin;
+    const targetDay = isEarlyMorning ? day - 2 : day - 1;
+    const pharmaciesData = data[year]?.[month]?.[month + 1]?.[targetDay];
 
-        //console.log(newArray)
+    if (!pharmaciesData) {
+      setArray([]);
+      return;
+    }
 
-      }else{
-        setLoader(false);
-        return
+    const pharmacies = pharmaciesData.pharmacies.map((pharmacy) => {
+      if (ubication) {
+        pharmacy.distance = calcularDistancia(lat1,lon1,pharmacy.lat,pharmacy.lon);
+        pharmacy.distance = pharmacy.distance < 99 ? parseFloat(pharmacy.distance.toFixed(1)): Math.round(pharmacy.distance);
       }
-      setArray(newArray); 
-      setLetra(data[year][month][month+1][day-2].dateShift.toUpperCase())
-      setLoader(false)
+      return pharmacy;
+    });
+
+    if (ubication) {
+      pharmacies.sort((a, b) => a.distance - b.distance);
     }
-    
-  }else{
-    //console.log('Muestra la letra del dia actual')
-  if (data) {
-    setLoader(true);
-    const newArray = []; 
-    if(data[year][month][month+1][day-1]){
-      data[year][month][month+1][day-1].pharmacies.forEach(e => {
-        newArray.push(e);
-      });
-    }else{
-      setLoader(false);
-      return
-    }
-    setArray(newArray); 
-    setLetra(data[year][month][month+1][day-1].dateShift.toUpperCase());
-    setLoader(false);
-  }
-}
-}, [data, month, day]);
+
+    setArray(pharmacies);
+    setLetra(pharmaciesData.dateShift.toUpperCase());
+  }, [data, day, month, year, horaActual, ubication, lat1, lon1]);
 
   if (error) {
-    return <div>{error}</div>;
+    return <div className="error-message">{error}</div>;
   }
 
   if (!data) {
     return <div></div>;
   }
-  return (
-    <div className="containerFarmacias">
-      <h2>Datos de Farmacias</h2>
-      <p>Letra: <span style={{ color: "green", fontWeight: "bold" }}>{letra}</span></p>
-      {array.map((e, i) => (
-        <div className="items" key={i}>
-          <div className="infoItems">
-            <p>{e.name}</p>
-            <p>{e.address}</p>
-            <p>{e.tel}</p>
-          </div>
-          <div className="btn-container">
-          <a href={`https://www.google.com/maps/search/?api=1&query=${e.lat},${e.lon}`} rel="noopener" target="_blank" title="Ver en mapa">
-            <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#EA3323">
-              <path d="M480.06-486.67q30.27 0 51.77-21.56 21.5-21.55 21.5-51.83 0-30.27-21.56-51.77-21.55-21.5-51.83-21.5-30.27 0-51.77 21.56-21.5 21.55-21.5 51.83 0 30.27 21.56 51.77 21.55 21.5 51.83 21.5ZM480-80Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Z"/>
-            </svg>
-          </a>  
-          </div>
+
+  const formatDistance = (distance) => {
+    if (distance < 1) return `${Math.round(distance * 1000)} Mt.`;
+    return `${distance} Km.`;
+  };
+
+    return (
+        <div className="containerFarmacias">
+            <h2>Datos de Farmacias</h2>
+            <p>
+                Letra: <span style={{color: "green", fontWeight: "bold"}}>{letra}</span>
+                
+            </p>
+            <button className="btn-show-map" onClick={() => setMostrarMapa(!mostrarMapa)} title="Mostrar/Ocultar mapa">
+                {mostrarMapa ? 
+                <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#EA3323"><path d="m251.33-204.67-46.66-46.66L433.33-480 204.67-708.67l46.66-46.66L480-526.67l228.67-228.66 46.66 46.66L526.67-480l228.66 228.67-46.66 46.66L480-433.33 251.33-204.67Z"/></svg>
+                : 
+                <img src={iconoMaps} alt="Icono mapa" />
+                }
+              </button>
+            
+            {array && !mostrarMapa ? (
+                array.map((pharmacy, index) => (
+                    <div className="items" key={index}>
+                        <div className="infoItems">
+                            <p>{pharmacy.name}</p>
+                            <p>{pharmacy.address}</p>
+                            {ubication && <p>{formatDistance(pharmacy.distance)}</p>}
+                            <p>{pharmacy.tel}</p>
+                        </div>
+                        <div className="btn-container">
+                            <a
+                                href={`https://www.google.com/maps/search/?api=1&query=${pharmacy.lat},${pharmacy.lon}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title="Ver en mapa"
+                            >
+                                <img src={iconoPosicion} alt="Icono de posicion en el mapa"/>
+                            </a>
+                        </div>
+                    </div>
+                ))
+            ) : ''}
+
+            {!array && (
+                <p>No se encontraron farmacias para mostrar.</p>
+            )}
+
+            {array && mostrarMapa && (
+                <div style={{height: 400, width: "100%"}}>
+                    <MapaUbicaciones puntos={array} actual={{
+                        lat: lat1,
+                        lng: lon1
+                    }}/>
+                </div>
+            )}
+
         </div>
-      ))}
-    </div>
-  );
+    );
 };
+
 export default Peticiones;

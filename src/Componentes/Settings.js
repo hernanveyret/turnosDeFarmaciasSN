@@ -1,6 +1,20 @@
 import React from 'react';
 import './settings.css';
-const Settings = ({settingOptions,almanacType,handleChangeAlmanacType,setModoNocturno,modoNocturno}) => {
+const Settings = ({settingOptions,almanacType,handleChangeAlmanacType,setModoNocturno,modoNocturno,ubication,setUbication,shared,setShared}) => {
+
+  const sharedApp = () => {
+    navigator.clipboard.writeText('https://test-farmacias.vercel.app/') // copia el texto en el portapapeles del dispositivo
+    .then(() => {
+      setShared(true)
+      setTimeout(() => {
+       setShared(false)
+      }, 3000);
+    })
+    .catch(()=> {
+      console.log('Error al compiar el link al portapapeles')
+    })
+  }
+
   return (
     <div className="containerSettings" id="panelSetting">
       <button className="btn-cerrar-settings" onClick={settingOptions} title="Cerrar Menu">X</button>
@@ -10,7 +24,7 @@ const Settings = ({settingOptions,almanacType,handleChangeAlmanacType,setModoNoc
       <nav>
         <div className="form">
           <div>
-            <button onClick={() => {setModoNocturno(prevMode => !prevMode)}} title="Modo oscuro/claro">        
+            <button onClick={() => {setModoNocturno(prevMode => !prevMode); settingOptions()}} title="Modo oscuro/claro">        
             {
               modoNocturno ?
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFF55"><path d="M460-743.08v-135.38h40v135.38h-40Zm219.85 91.54-27.31-27.31 94.31-98.07 29.07 29.3-96.07 96.08ZM743.08-460v-40h135.38v40H743.08ZM460-81.54v-134.61h40v134.61h-40ZM281.69-652.77l-98.61-94.08 30.07-28.3 96.08 95.3-27.54 27.08Zm464.93 469.69-94.08-98.07 27.08-26.31 95.53 93.84-28.53 30.54ZM81.54-460v-40h135.38v40H81.54Zm130.84 276.92-27.53-30.07 94.3-94.31 14.39 13.92 15.15 14.16-96.31 96.3ZM480.18-280q-83.26 0-141.72-58.28Q280-396.56 280-479.82q0-83.26 58.28-141.72Q396.56-680 479.82-680q83.26 0 141.72 58.28Q680-563.44 680-480.18q0 83.26-58.28 141.72Q563.44-280 480.18-280Z"/></svg>
@@ -36,6 +50,21 @@ const Settings = ({settingOptions,almanacType,handleChangeAlmanacType,setModoNoc
               :    
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#75FB4C"><path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z"/></svg>
             } 
+            </button>
+          </div>
+          <div>
+            <button onClick={() => {setUbication(prevMode => !prevMode); settingOptions()}} title="Distancia">        
+            {
+              ubication ?
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#75FB4C"><path d="M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z"/></svg>
+              :
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z"/></svg>
+            }
+            </button>
+          </div>
+          <div>
+            <button onClick={() => { sharedApp(); settingOptions()}} title="Copiar url al portapapeles">        
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#75FB4C"><path d="M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-80q17 0 28.5-11.5T720-200q0-17-11.5-28.5T680-240q-17 0-28.5 11.5T640-200q0 17 11.5 28.5T680-160ZM200-440q17 0 28.5-11.5T240-480q0-17-11.5-28.5T200-520q-17 0-28.5 11.5T160-480q0 17 11.5 28.5T200-440Zm480-280q17 0 28.5-11.5T720-760q0-17-11.5-28.5T680-800q-17 0-28.5 11.5T640-760q0 17 11.5 28.5T680-720Zm0 520ZM200-480Zm480-280Z"/></svg>
             </button>
           </div>
         </div>
