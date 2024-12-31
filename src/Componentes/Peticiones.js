@@ -64,7 +64,8 @@ const Peticiones = ({hora, day, month, year, setLoader, ubication, lat1, lon1}) 
 
     const isEarlyMorning = horaActual >= inicio && horaActual <= fin;
     const targetDay = isEarlyMorning ? day - 2 : day - 1;
-    const pharmaciesData = data[year]?.[month]?.[month + 1]?.[targetDay];
+    const pharmaciesData = ( day === 1 && month+1 === 1 && isEarlyMorning === true) ? data[year-1]?.[11][12][30] : data[year]?.[month]?.[month + 1]?.[targetDay];
+    //const pharmaciesData = data[year]?.[month]?.[month + 1]?.[targetDay];
 
     if (!pharmaciesData) {
       setArray([]);
