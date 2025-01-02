@@ -68,25 +68,34 @@ const Home = () => {
   let bodyRef = useRef()
   let fotterRef = useRef()
   let cardHeaderRef = useRef()
+  let checkError = useRef()
 
-let localConfig = localStorage.getItem('settingsFarmaciaV2')
+let localConfig = localStorage.getItem('settingsFarmaciaV3')
+
+
+if(localStorage.getItem('settingsFarmaciaV2')){
+  localStorage.removeItem('settingsFarmaciaV2');
+}
+
   const [ initConfig, setInitConfig ] = useState(localConfig ? JSON.parse(localConfig) : { 
     modoNocturno: false,
     almanacType: true,
     advertising: false,
     ubicacion: true,
     question: true,
+    isErrorBannerVisible: true
   });
 
   const [ almanacType, setAlmanacType ] = useState(initConfig.almanacType)
   const [ modoNocturno, setModoNocturno ] = useState(initConfig.modoNocturno)
   const [ ubication, setUbication ] = useState(initConfig.ubicacion)
   const [ question, setQuestion ] = useState(initConfig.question);
+  const [ isErrorBannerVisible, setIsErrorBannerVisible ] = useState(initConfig.isErrorBannerVisible);
   
   const [ shared, setShared ] = useState(false);
   const [ error, setError ] = useState(false);
   const [ loader, setLoader ] = useState(false);
-  const [ mapsOn, setMapsOn ] = useState(false);
+  
   const [ fecha, setFecha ] = useState(new Date());
   const [ day, setDay ] = useState(fecha.getDate()); // dia en numero.
   const [ dayString, setDayString ] = useState(fecha.toLocaleString('es-ES', { weekday: 'long' }));
@@ -129,6 +138,18 @@ let localConfig = localStorage.getItem('settingsFarmaciaV2')
   console.log('ultimo dia del mes anterior', cantDiasMes) // ultimo dia del mes anterior
   console.log('celvas vacias', celdasVacias); // posicion del primer dia del mes del 0 al 6.
   */
+
+useEffect(() => {
+
+  if(!isErrorBannerVisible){
+    let updatedConfig = {
+      ...initConfig,
+      isErrorBannerVisible: false
+    }
+    localStorage.setItem('settingsFarmaciaV3', JSON.stringify(updatedConfig));
+  }
+  
+},[error])
 
 
   // Mes anterior
@@ -200,7 +221,7 @@ let localConfig = localStorage.getItem('settingsFarmaciaV2')
     };
   
     setInitConfig(updatedConfig);
-    localStorage.setItem('settingsFarmaciaV2', JSON.stringify(updatedConfig));
+    localStorage.setItem('settingsFarmaciaV3', JSON.stringify(updatedConfig));
   }, [almanacType]);
 
   function geo(){
@@ -241,7 +262,7 @@ let localConfig = localStorage.getItem('settingsFarmaciaV2')
     }
      
     setInitConfig(updatedConfig);
-    localStorage.setItem('settingsFarmaciaV2', JSON.stringify(updatedConfig));
+    localStorage.setItem('settingsFarmaciaV3', JSON.stringify(updatedConfig));
   },[ubication,question])
 
   //Cambia el estado para mostrar el cartel de consulta para la geolocalizacion.
@@ -252,7 +273,7 @@ let localConfig = localStorage.getItem('settingsFarmaciaV2')
     }
 
     setInitConfig(updatedConfig);
-    localStorage.setItem('settingsFarmaciaV2', JSON.stringify(updatedConfig));
+    localStorage.setItem('settingsFarmaciaV3', JSON.stringify(updatedConfig));
   },[question])
 
   // Cambio de normal a modo nocturno
@@ -262,7 +283,7 @@ let localConfig = localStorage.getItem('settingsFarmaciaV2')
       modoNocturno: modoNocturno
     };
     setInitConfig(updatedConfig);
-    localStorage.setItem('settingsFarmaciaV2', JSON.stringify(updatedConfig));
+    localStorage.setItem('settingsFarmaciaV3', JSON.stringify(updatedConfig));
     
     if(modoNocturno === true ) {
       headerRef.current.classList.add('activateDarkMode')
@@ -283,7 +304,7 @@ let localConfig = localStorage.getItem('settingsFarmaciaV2')
   
   return (
     <div className="containerHome" ref={bodyRef}>
-      { mapsOn && <Maps /> }
+      
          { loader && <Loader />}
       <header ref={headerRef}>
         <a href="https://turnos-de-farmacias-sn.vercel.app/">
@@ -304,8 +325,10 @@ let localConfig = localStorage.getItem('settingsFarmaciaV2')
               setUbication={setUbication}
               />}
 
-            { error && <Error 
+            { isErrorBannerVisible && error && <Error 
                 setError={setError}
+                checkError={checkError}
+                setIsErrorBannerVisible={setIsErrorBannerVisible}
             /> }
             <Settings 
               shared={shared}
