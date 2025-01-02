@@ -143,17 +143,15 @@ const Peticiones = ({hora, day, month, year, setLoader, ubication, lat1, lon1}) 
                 <p>No se encontraron farmacias para mostrar.</p>
             )}
 
-            { array && mostrarMapa &&  (
-              <div style={{ height: 400, width: "100%" }}>
-                <MapaUbicaciones
-                  puntos={array}
-                  actual={{
-                  lat: lat1,
-                  lng: lon1,
-                  }}
-                />
-              </div>
+            {array && mostrarMapa && (
+                <div style={{height: 400, width: "100%"}}>
+                    <MapaUbicaciones puntos={array} actual={{
+                        lat: lat1,
+                        lng: lon1
+                    }}/>
+                </div>
             )}
+
         </div>
     );
 };
