@@ -9,7 +9,8 @@ const Peticiones = ({hora, day,setDay, month, year, setLoader,setMonth }) => {
   const [letra, setLetra] = useState('')
 
   //const url = 'http://localhost:5000/2024'
-  const url = 'https://raw.githubusercontent.com/hernanveyret/farmaciasDeTurnoSN/main/src/Api/farmacias2024.json'
+  //const url = 'https://raw.githubusercontent.com/hernanveyret/farmaciasDeTurnoSN/main/src/Api/farmacias2024.json'
+  const url = 'https://farmacia-servidor.vercel.app/api/farmacias'
 
   const convertToTime = (timeStr) => {
     const [hours, minutes, seconds] = timeStr.split(':');
@@ -34,7 +35,7 @@ const Peticiones = ({hora, day,setDay, month, year, setLoader,setMonth }) => {
         setError('Hubo un error al obtener los datos.');
         setLoader(false);
       });
-  }, []);
+  }, [setLoader]);
 
 useEffect(() => {
 
@@ -47,6 +48,9 @@ useEffect(() => {
         data[year][month][month+1][day-2].pharmacies.forEach(e => {
           newArray.push(e);
         });
+
+        console.log(newArray)
+        
       }else{
         setLoader(false);
         return
