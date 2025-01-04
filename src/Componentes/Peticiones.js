@@ -75,7 +75,14 @@ const Peticiones = ({hora, day, month, year, setLoader, ubication, lat1, lon1}) 
     const pharmacies = pharmaciesData.pharmacies.map((pharmacy) => {
       if (ubication) {
         pharmacy.distance = calcularDistancia(lat1,lon1,pharmacy.lat,pharmacy.lon);
-        pharmacy.distance = pharmacy.distance < 99 ? parseFloat(pharmacy.distance.toFixed(1)): Math.round(pharmacy.distance);
+        if(pharmacy.distance > 7000.0){
+          pharmacy.distance = 'Cargando...'
+       } else if ( pharmacy.distance < 99 ){
+         pharmacy.distance = parseFloat(pharmacy.distance.toFixed(1))
+       } else {
+         pharmacy.distance = Math.round(pharmacy.distance)
+       }
+        // pharmacy.distance = pharmacy.distance < 99 ? parseFloat(pharmacy.distance.toFixed(1)): Math.round(pharmacy.distance);
       }
       return pharmacy;
     });
