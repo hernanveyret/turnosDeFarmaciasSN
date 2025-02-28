@@ -116,10 +116,12 @@ const Home = () => {
   // Mes anterior
   const handlePrev = () => {
     month === 0 ? setMonth(0) : setMonth(month - 1);
+    setDay(1)
   }
   //Mes siguiente
   const handleNext = () => {
     month === 11 ? setMonth(11) : setMonth(month + 1);
+    setDay(1)
   }
   // Dia  anterior
   const handleChangeDayStringPrev = () => {
