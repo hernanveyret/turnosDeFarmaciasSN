@@ -8,6 +8,7 @@ import Loader from './Loader';
 import QuestionGeo from './QuestionGeo';
 import Error from './Error';
 import SharedConfirm from './ShareConfirm';
+import Qr from './Qrimg';
 
 import './home.css';
 
@@ -69,6 +70,7 @@ const Home = () => {
   const [celdasVacias, setCeldasVacias] = useState(new Date(year, month, 1).getDay()) // Posicion del primer dia del mes, del 0 al 6, dom-lun...
   const [lat1, setLat1] = useState(null)
   const [lon1, setLon1] = useState(null);
+  const [ onQr, setOnQr ] = useState(false);
 
   useEffect(() => {
     geo()
@@ -260,7 +262,7 @@ const Home = () => {
 
   return (
     <div className="containerHome" ref={bodyRef}>
-
+      
       {loader && <Loader/>}
       <header ref={headerRef}>
         <a href="https://turnos-de-farmacias-sn.vercel.app/">
@@ -299,6 +301,7 @@ const Home = () => {
           almanacType={almanacType}
           ubication={ubication}
           setUbication={setUbication}
+          setOnQr={setOnQr}
         />
         <article className="almanaque">
           {almanacType ? <Almanac
@@ -339,7 +342,15 @@ const Home = () => {
             lon1={lon1}
           />
         </article>
+        {
+        onQr && <Qr 
+        settingOptions={settingOptions}
+          onQr={onQr}
+          setOnQr={setOnQr}
+        />
+      }
       </main>
+     
       <footer ref={fotterRef}>
         <p>Diseñado por Hernán Luis Veyret - 2024 - Version 1.2 - hernanveyret@hotmail.com</p>
         <p>Colaboracion de Manuel Eduardo Canepa - manuelcanepa@gmail.com</p>
