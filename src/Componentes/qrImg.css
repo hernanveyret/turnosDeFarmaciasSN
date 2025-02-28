@@ -24,6 +24,8 @@ button {
   height: auto;
   object-fit: cover;
   object-position: 0 50%;
+  border: thin solid grey;
+  box-shadow: 3px 3px 8px grey;
 }
 
 @media screen and ( min-width: 37em) {
