@@ -123,6 +123,10 @@ const Home = () => {
     month === 11 ? setMonth(11) : setMonth(month + 1);
     setDay(1)
   }
+  const toDay = () => {
+    setDay(fecha.getDate())
+    setMonth(fecha.getMonth())
+  }
   // Dia  anterior
   const handleChangeDayStringPrev = () => {
     //console.log('prev')
@@ -319,6 +323,7 @@ const Home = () => {
               handlePrev={handlePrev}
               handleNext={handleNext}
               handleDay={handleDay}
+              toDay={toDay}
             /> :
             <AlmanacDay
               day={day}
@@ -331,6 +336,7 @@ const Home = () => {
               handleChangeDayStringPrev={handleChangeDayStringPrev}
               handleChangeDayStringNext={handleChangeDayStringNext}
               cardHeaderRef={cardHeaderRef}
+              toDay={toDay}
             />
           }
         </article>
