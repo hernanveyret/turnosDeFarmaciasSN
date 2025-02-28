@@ -59,11 +59,18 @@ const Peticiones = ({hora, day, month, year, setLoader, ubication, lat1, lon1}) 
   // Filtrar farmacias
   useEffect(() => {
     if (!data) return;
-
-    const isEarlyMorning = horaActual >= inicio && horaActual <= fin;
+    const lastDay = new Date(year, month, 0).getDate()    
+    const isEarlyMorning = horaActual >= inicio && horaActual <= fin;    
     const targetDay = isEarlyMorning ? day - 2 : day - 1;
-    const pharmaciesData = (day === 1 && month + 1 === 1 && isEarlyMorning === true) ? data[year - 1]?.[11][12][30] : data[year]?.[month]?.[month + 1]?.[targetDay];
-    //const pharmaciesData = data[year]?.[month]?.[month + 1]?.[targetDay];
+    const pharmaciesData = (day === 1 && month + 1 === 1 && isEarlyMorning === true) 
+      ?
+        data[year - 1]?.[11][12][30] 
+      :
+      isEarlyMorning && day === 1 
+        ?      
+          data[year]?.[month-1]?.[month]?.[lastDay - 1] 
+        :
+        data[year]?.[month]?.[month + 1]?.[targetDay]
 
     if (!pharmaciesData) {
       setArray([]);
