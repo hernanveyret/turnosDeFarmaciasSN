@@ -79,7 +79,7 @@ footer p {
   background: transparent;
   color: white;
   position: absolute;
-  right: .5rem;
+  right: -10px;
 }
 
 .activateDarkMode {
