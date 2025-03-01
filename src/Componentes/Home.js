@@ -128,24 +128,29 @@ const Home = () => {
     setMonth(fecha.getMonth())
   }
   // Dia  anterior
-  const handleChangeDayStringPrev = () => {
-    //console.log('prev')
-    if (day === 1) {
-      setDay(new Date(year, month, 0).getDate())
-      handlePrev()
+  const handleChangeDayStringPrev = () => {   
+    if( day === 1 && month === 0) {
       return
+    }else if( day === 1 ){
+      setDay(new Date(year, month, 0).getDate())
+      setMonth(prevMonth => prevMonth - 1)
+      return
+    }else{    
+      setDay(day - 1)
     }
-    setDay(day - 1)
   };
 
   // Dia siguiente
   const handleChangeDayStringNext = () => {
-    if (day === cantDiasMes) {
+    if ( day === 31 && month === 11 ){
+      return
+    }else if (day === cantDiasMes) {
       setDay(1)
       handleNext()
       return
-    }
+    }else{
     setDay(day + 1)
+    }
   }
 // cambia dayString segun el dia
   useEffect(() => {
