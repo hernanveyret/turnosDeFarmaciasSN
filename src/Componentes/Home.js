@@ -257,10 +257,11 @@ const Home = () => {
     if (modoNocturno === true) {
       headerRef.current.classList.add('activateDarkMode')
       fotterRef.current.classList.add('activateDarkMode')
-      bodyRef.current.classList.add('activateDarkModeBody');
+      bodyRef.current.classList.add('activateDarkModeBody');      
       if (cardHeaderRef.current) { // si el componente esta montado activa la clase
         cardHeaderRef.current.classList.add('activateDarkMode');
       }
+       
     } else {
       headerRef.current.classList.remove('activateDarkMode')
       fotterRef.current.classList.remove('activateDarkMode')
@@ -270,6 +271,14 @@ const Home = () => {
       }
     }
   }, [modoNocturno]);
+
+  useEffect(() => {
+    if(modoNocturno){
+      if(cardHeaderRef.current){
+        cardHeaderRef.current.classList.add('activateDarkMode')
+      }
+    }
+  },[cardHeaderRef.current])
 
   return (
     <div className="containerHome" ref={bodyRef}>
