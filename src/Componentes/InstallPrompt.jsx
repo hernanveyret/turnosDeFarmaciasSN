@@ -6,7 +6,7 @@ const isMobile = () => {
 
 const InstallPrompt = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const [showPrompt, setShowPrompt] = useState(true);
+  const [showPrompt, setShowPrompt] = useState(false);
 
   useEffect(() => {
     if (!isMobile()) return;
