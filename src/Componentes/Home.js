@@ -9,6 +9,7 @@ import QuestionGeo from './QuestionGeo';
 import Error from './Error';
 import SharedConfirm from './ShareConfirm';
 import Qr from './Qrimg';
+import InstallPrompt from './InstallPrompt';
 
 import './home.css';
 
@@ -282,7 +283,7 @@ const Home = () => {
 
   return (
     <div className="containerHome" ref={bodyRef}>
-      
+       { <InstallPrompt />}
       {loader && <Loader/>}
       <header ref={headerRef}>
         <a href="https://turnos-de-farmacias-sn.vercel.app/">
