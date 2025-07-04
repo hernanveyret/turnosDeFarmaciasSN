@@ -6,7 +6,7 @@ const isMobile = () => {
 
 const InstallPrompt = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const [showPrompt, setShowPrompt] = useState(false);
+  const [showPrompt, setShowPrompt] = useState(true);
 
   useEffect(() => {
     if (!isMobile()) return;
@@ -54,12 +54,12 @@ const InstallPrompt = () => {
 const styles = {
   container: {
     position: 'fixed',
-    top: '50px',
-    left: '20px',
-    right: '20px',
+    top: '20px',
+    left: '10px',
+    right: '10px',
     backgroundColor: '#008000',
     color: 'white',
-    padding: '10px 15px',    
+    padding: '8px 12px',
     borderRadius: '10px',
     zIndex: 9999,
     display: 'flex',
@@ -67,29 +67,36 @@ const styles = {
     alignItems: 'center',
     fontFamily: 'sans-serif',
     boxShadow: '2px 2px 10px rgba(0,0,0,0.2)',
-    minHeight: '50px',       
+    minHeight: '40px',
+    flexWrap: 'wrap',
   },
   text: {
     margin: 0,
-    fontSize: '16px',
+    fontSize: '14px',
     fontWeight: 'bold',
-    lineHeight: '50px',      
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    maxWidth: '60%',
   },
   buttons: {
     display: 'flex',
-    gap: '10px',
+    gap: '6px',
+    flexShrink: 0,
   },
   button: {
     backgroundColor: '#F0F0F0',
     color: 'black',
     border: 'none',
-    padding: '8px 14px',     
+    padding: '6px 10px',
     borderRadius: '5px',
     fontWeight: 'bold',
     cursor: 'pointer',
-    height: '34px',          
+    fontSize: '13px',
+    height: '32px',
   }
 };
+
 
 
 export default InstallPrompt;
